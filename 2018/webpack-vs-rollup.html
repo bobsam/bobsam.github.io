@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Webpack vs Rollup | 小贤的博客 | 生活。技术。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Javascript,Webpack,Rollup">
+    <meta name="description" content="4月份的时候，Facebook将React的构建工具换成了Rollup。很多人就有疑问了，Webpack不也是Facebook团队开发的吗，为什么不使用它而是要换成第三方构建工具呢？先别急，等你看完这篇文章，你就知道为什么了。  一、Webpack诞生于2012年，目前Javascript社区使用得比较多的构建工具。它的出现，解决了当时的构建工具不能处理的问题——构建复杂的单页面应用(SPA)。">
+<meta name="keywords" content="Javascript,Webpack,Rollup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webpack vs Rollup">
+<meta property="og:url" content="https://bobsam.github.io/2018/webpack-vs-rollup.html">
+<meta property="og:site_name" content="小贤的博客">
+<meta property="og:description" content="4月份的时候，Facebook将React的构建工具换成了Rollup。很多人就有疑问了，Webpack不也是Facebook团队开发的吗，为什么不使用它而是要换成第三方构建工具呢？先别急，等你看完这篇文章，你就知道为什么了。  一、Webpack诞生于2012年，目前Javascript社区使用得比较多的构建工具。它的出现，解决了当时的构建工具不能处理的问题——构建复杂的单页面应用(SPA)。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://nos.netease.com/knowledge/1ab180ac-4581-4ea8-8f8d-86a844b4e0a3?imageView&thumbnail=980x0">
+<meta property="og:updated_time" content="2018-03-25T16:47:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Webpack vs Rollup">
+<meta name="twitter:description" content="4月份的时候，Facebook将React的构建工具换成了Rollup。很多人就有疑问了，Webpack不也是Facebook团队开发的吗，为什么不使用它而是要换成第三方构建工具呢？先别急，等你看完这篇文章，你就知道为什么了。  一、Webpack诞生于2012年，目前Javascript社区使用得比较多的构建工具。它的出现，解决了当时的构建工具不能处理的问题——构建复杂的单页面应用(SPA)。">
+<meta name="twitter:image" content="http://nos.netease.com/knowledge/1ab180ac-4581-4ea8-8f8d-86a844b4e0a3?imageView&thumbnail=980x0">
+    
+        <link rel="alternate" type="application/atom+xml" title="小贤的博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Bob Yu</h5>
+          <a href="mailto:gzyuboxian@gmail.com" title="gzyuboxian@gmail.com" class="mail">gzyuboxian@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bobsam" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://weibo.com/bobsam" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://mail.163.com" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                网易邮箱
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Webpack vs Rollup</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Webpack vs Rollup</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-24T16:55:11.000Z" itemprop="datePublished" class="page-time">
+  2018-03-25
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/技术/">技术</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、Webpack"><span class="post-toc-number">1.</span> <span class="post-toc-text">一、Webpack</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Webpack的特点"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Webpack的特点</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码分割"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">代码分割</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Loader-加载器"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">Loader(加载器)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#智能解析"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">智能解析</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#插件系统"><span class="post-toc-number">1.1.4.</span> <span class="post-toc-text">插件系统</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#开始使用"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">开始使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#安装"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#配置"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">配置</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二、Rollup"><span class="post-toc-number">2.</span> <span class="post-toc-text">二、Rollup</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Rollup的特点"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Rollup的特点</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Tree-shaking"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">Tree-shaking</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ES2015模块打包支持"><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">ES2015模块打包支持</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三、Webpack与Rollup的对比"><span class="post-toc-number">3.</span> <span class="post-toc-text">三、Webpack与Rollup的对比</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、总结"><span class="post-toc-number">4.</span> <span class="post-toc-text">四、总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-webpack-vs-rollup"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Webpack vs Rollup</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-25 00:55:11" datetime="2018-03-24T16:55:11.000Z"  itemprop="datePublished">2018-03-25</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/技术/">技术</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>4月份的时候，Facebook将React的构建工具换成了Rollup。很多人就有疑问了，Webpack不也是Facebook团队开发的吗，为什么不使用它而是要换成第三方构建工具呢？先别急，等你看完这篇文章，你就知道为什么了。</p>
+</blockquote>
+<h2 id="一、Webpack"><a href="#一、Webpack" class="headerlink" title="一、Webpack"></a>一、Webpack</h2><p>诞生于2012年，目前Javascript社区使用得比较多的构建工具。它的出现，解决了当时的构建工具不能处理的问题——构建复杂的单页面应用(SPA)。它是一个强力的模块打包器。 所谓包(bundle)就是一个 JavaScript 文件，它把一堆资源(assets)合并在一起，以便它们可以在同一个文件请求中发回给客户端。 包中可以包含 JavaScript、CSS 样式、HTML 以及很多其它类型的文件。</p>
+<p><img src="http://nos.netease.com/knowledge/1ab180ac-4581-4ea8-8f8d-86a844b4e0a3?imageView&amp;thumbnail=980x0" alt="Alt pic"></p>
+<h3 id="Webpack的特点"><a href="#Webpack的特点" class="headerlink" title="Webpack的特点"></a>Webpack的特点</h3><h4 id="代码分割"><a href="#代码分割" class="headerlink" title="代码分割"></a>代码分割</h4><p>Webpack 有两种组织模块依赖的方式，同步和异步。异步依赖作为分割点，形成一个新的块。在优化了依赖树后，每一个异步区块都作为一个文件被打包。</p>
+<h4 id="Loader-加载器"><a href="#Loader-加载器" class="headerlink" title="Loader(加载器)"></a>Loader(加载器)</h4><p>Webpack 本身只能处理原生的 JavaScript 模块，但是 loader 转换器可以将各种类型的资源转换成 JavaScript 模块。这样，任何资源都可以成为 Webpack 可以处理的模块。</p>
+<h4 id="智能解析"><a href="#智能解析" class="headerlink" title="智能解析"></a>智能解析</h4><p>Webpack 有一个智能解析器，几乎可以处理任何第三方库，无论它们的模块形式是 CommonJS、 AMD 还是普通的 JS 文件。甚至在加载依赖的时候，允许使用动态表达式 require(“./templates/“ + name + “.jade”)。</p>
+<h4 id="插件系统"><a href="#插件系统" class="headerlink" title="插件系统"></a>插件系统</h4><p>Webpack 还有一个功能丰富的插件系统。大多数内容功能都是基于这个插件系统运行的，还可以开发和使用开源的 Webpack 插件，来满足各式各样的需求。</p>
+<h3 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><blockquote>
+<p>目前webpack最新版本是3.0.0</p>
+</blockquote>
+<pre><code>npm i webpack -g  
+npm i webpack@version -g
+</code></pre><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>在项目添加webpack.config.js  </p>
+<pre><code>const path = require(&apos;path&apos;);
+const webpack = require(&apos;webpack&apos;);
+module.exports = {
+      entry: &apos;./src/main.js&apos;,
+      output: {
+        path: path.resolve(__dirname, &apos;./dist&apos;),
+        publicPath: &apos;/dist/&apos;,
+        filename: &apos;build.js&apos;
+      },
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: &apos;vue-loader&apos;,
+            options: {
+                  loaders: {}
+                  // other vue-loader options go here
+            }
+          },
+          {
+            test: /\.js$/,
+            loader: &apos;babel-loader&apos;,
+            exclude: /node_modules/
+          },
+          {
+            test: /\.(png|jpg|gif|svg)$/,
+            loader: &apos;file-loader&apos;,
+            options: {
+              name: &apos;[name].[ext]?[hash]&apos;
+            }
+          }
+        ]
+      },
+      resolve: {
+        alias: {
+              &apos;vue$&apos;: &apos;vue/dist/vue.common.js&apos;
+        }
+      },
+      devServer: {
+        historyApiFallback: true,
+        noInfo: true
+      },
+      performance: {
+        hints: false
+      },
+      devtool: &apos;#eval-source-map&apos;
+}
+if (process.env.NODE_ENV === &apos;production&apos;) {
+    module.exports.devtool = &apos;#source-map&apos;;
+
+    module.exports.plugins = (module.exports.plugins || []).concat([
+        new webpack.DefinePlugin({
+            &apos;process.env&apos;: {
+                NODE_ENV: &apos;&quot;production&quot;&apos;
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
+            compress: {
+                warnings: false
+            }
+        }),
+        new webpack.LoaderOptionsPlugin({
+            minimize: true
+        })
+    ]);
+}
+</code></pre><p>打开命令控制台，执行：  </p>
+<pre><code>webpack
+# or webpack --config webpack.config.js
+</code></pre><p>此时你应该可以在项目目录的dist文件夹里找到打包好的文件了。</p>
+<blockquote>
+<p>其他使用方式可参照官方文档:<br>英文：<a href="https://webpack.js.org/configuration/" target="_blank" rel="noopener">https://webpack.js.org/configuration/</a><br>中文：<a href="https://doc.webpack-china.org/configuration/" target="_blank" rel="noopener">https://doc.webpack-china.org/configuration/</a>  </p>
+</blockquote>
+<h2 id="二、Rollup"><a href="#二、Rollup" class="headerlink" title="二、Rollup"></a>二、Rollup</h2><p>Rollup是下一代JavaScript模块打包工具。开发者可以在你的应用或库中使用ES2015模块，然后高效地将它们打包成一个单一文件用于浏览器和Node.js使用。<br>Rollup最令人激动的地方，就是能让打包文件体积很小。这么说很难理解，更详细的解释：相比其他JavaScript打包工具，Rollup总能打出更小，更快的包。因为Rollup基于ES2015模块，比Webpack和Browserify使用的CommonJS模块机制更高效。这也让Rollup从模块中删除无用的代码，即<strong><code>tree-shaking</code></strong>变得更容易。</p>
+<h3 id="Rollup的特点"><a href="#Rollup的特点" class="headerlink" title="Rollup的特点"></a>Rollup的特点</h3><h4 id="Tree-shaking"><a href="#Tree-shaking" class="headerlink" title="Tree-shaking"></a>Tree-shaking</h4><p>这个特点，是Rollup最初推出时的一大特点。Rollup通过对代码的静态分析，分析出冗余代码，在最终的打包文件中将这些冗余代码删除掉，进一步缩小代码体积。这是目前大部分构建工具所不具备的特点(Webpack 2.0+已经支持了，但是我本人觉得没有Rollup做得干净)。</p>
+<h4 id="ES2015模块打包支持"><a href="#ES2015模块打包支持" class="headerlink" title="ES2015模块打包支持"></a>ES2015模块打包支持</h4><p>这个也是其他构建工具所不具备的。Rollup直接不需要通过babel将import转化成Commonjs的require方式，极大地利用ES2015模块的优势。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>先在全局安装好rollup  </p>
+<pre><code>npm i rollup -g  
+</code></pre><p>然后我们再创建一个简单的项目：</p>
+<pre><code>mkdir -p my-rollup-project/src
+cd my-rollup-project
+</code></pre><p>编写好入口文件：</p>
+<pre><code>// src/main.js
+import foo from &apos;./foo.js&apos;;
+export default function () {
+      console.log(foo);
+}
+</code></pre><p>然后，创建一个名为<code>foo.js</code>的文件</p>
+<pre><code>// src/foo.js
+export default &apos;hello world!&apos;;
+</code></pre><p>最后，打开命令行，执行下面的命令吧：</p>
+<pre><code>rollup src/main.js --format cjs
+</code></pre><p>打包结果：</p>
+<pre><code>&apos;use strict&apos;;
+
+var foo = &apos;hello world!&apos;;
+
+var main = function () {
+      console.log(foo);
+};
+
+module.exports = main;
+</code></pre><p>你也可以打包出一个名为<code>bundle.js</code>的文件：</p>
+<pre><code>rollup src/main.js --format cjs --output bundle.js
+# or `rollup main.js -f cjs -o bundle.js`
+</code></pre><blockquote>
+<p>其他使用方式可查看官网文档：<br><a href="https://rollupjs.org" target="_blank" rel="noopener">https://rollupjs.org</a></p>
+</blockquote>
+<h2 id="三、Webpack与Rollup的对比"><a href="#三、Webpack与Rollup的对比" class="headerlink" title="三、Webpack与Rollup的对比"></a>三、Webpack与Rollup的对比</h2><p>其实，通过分别对Webpack和Rollup的介绍，不难看出，Webpack和Rollup在不同场景下，都能发挥自身优势作用。Webpack对于代码分割和静态资源导入有着“先天优势”，并且支持热模块替换(HMR)，而Rollup并不支持，所以当项目需要用到以上，则可以考虑选择Webpack。但是，Rollup对于代码的Tree-shaking和ES6模块有着算法优势上的支持，若你项目只需要打包出一个简单的bundle包，并是基于ES6模块开发的，可以考虑使用Rollup。<br>其实Webpack从2.0开始支持Tree-shaking，并在使用babel-loader的情况下支持了es6 module的打包了，实际上，Rollup已经在渐渐地失去了当初的优势了。但是它并没有被抛弃，反而因其简单的API、使用方式被许多库开发者青睐，如React、Vue等，都是使用Rollup作为构建工具的。而Webpack目前在中大型项目中使用得非常广泛。<br>最后，用一句话概括就是：<strong><code>在开发应用时使用 Webpack，开发库时使用 Rollup</code></strong>。</p>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>Webpack和Rollup作为构建工具，都有着各自的优势和各自的使用场景，我们不能因为他们的一些缺点而弃之，相反，我们在开发过程中，若是能利用好它们的优点，并能对我们的生产效率有着极大的提高作用。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-03-25T16:47:03.000Z" itemprop="dateUpdated">2018-03-26 00:47:03</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2018/webpack-vs-rollup.html" target="_blank" rel="external">https://bobsam.github.io/2018/webpack-vs-rollup.html</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://bobsam.github.io">
+            <img src="/img/avatar.jpeg" alt="Bob Yu">
+            Bob Yu
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Javascript/">Javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Rollup/">Rollup</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://bobsam.github.io/2018/webpack-vs-rollup.html&title=《Webpack vs Rollup》 — 小贤的博客&pic=https://bobsam.github.io/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://bobsam.github.io/2018/webpack-vs-rollup.html&title=《Webpack vs Rollup》 — 小贤的博客&source=书写我的生活。拓展我的前端技术" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://bobsam.github.io/2018/webpack-vs-rollup.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Webpack vs Rollup》 — 小贤的博客&url=https://bobsam.github.io/2018/webpack-vs-rollup.html&via=https://bobsam.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://bobsam.github.io/2018/webpack-vs-rollup.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "ms2by1Q6QPmQQ3K7Ovxpm0M9-gzGzoHsz",
+            appKey: "omvEsvbqSxnB3AoygAUs9GhA",
+            avatar: "retro",
+            placeholder: "为什么不写写你的意见呢",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        感谢您的支持~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpeg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpeg" data-alipay="/img/alipay.jpeg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Bob Yu &copy; 2017 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://bobsam.github.io/2018/webpack-vs-rollup.html&title=《Webpack vs Rollup》 — 小贤的博客&pic=https://bobsam.github.io/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://bobsam.github.io/2018/webpack-vs-rollup.html&title=《Webpack vs Rollup》 — 小贤的博客&source=书写我的生活。拓展我的前端技术" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://bobsam.github.io/2018/webpack-vs-rollup.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Webpack vs Rollup》 — 小贤的博客&url=https://bobsam.github.io/2018/webpack-vs-rollup.html&via=https://bobsam.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://bobsam.github.io/2018/webpack-vs-rollup.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aQZLDMAgFUd//0s4FEqs/KAuL1mpqynb0tKAQcF143T8WeZI/8/zWhiVDhozXMu7H9fwDZLuER353cUAyZMgYwCCb4HEv/fKvt8gXZMiQIYP/MHn+ObDKkCFDxl5G50meaMqQIUNGLSDyS2wKqAVrGTJkTGB0rqb//vsv/Q0ZMmS8inGH6zk566d6tSVDhoyzGTzA8VYlD9n8gNB+ZMiQcSgjHeFK0zty4eQjHcX7sQwZMl7O4B9Kk7na+AVvi375jwwZMgYw0rYiB6QF/W0tTBkyZIxh1FqM/Ah4qW6xWxkyZBzNSEv26TU1bSSkUVSGDBlnM3joTKtbJLDyQtvieixDhowxDD70wEtvacOStwS+tDBlyJAxhpGmaP2hsZQUTIvIkCHjIEZnYIK3JPcOW8iQIWMOgw9dkeBYO5RtQVyGDBmHMvjVtDYYwUc3rtKSIUPGBEYacPlIBNl6ejFeHJwMGTIGMGpFf54a9i+xiy/LkCFjAKPWHuBb52/VBj5kyJAxgcGHtzoltlppD6WqMmTIGMbg4bK2xU4SWbzEypAh47WMO1w8leSDGqQYFxTaZMiQcRwjbRbWwJ1Rs7RFKkOGjFMZaZBNS/mkqUACceukZciQcQSjNvJVC7idVC+eGZEhQ8ZgRlr6T0co4pKcDBkyZODgm15feaK5SBxlyJAxgNEpnKVjGWlQjoctZMiQcRyjdXVsdB7IeEd/REOGDBkvZ3wATr9qmPbVR7EAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
